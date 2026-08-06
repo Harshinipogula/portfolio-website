@@ -1,0 +1,34 @@
+===================================================
+CURRICULUM VITAE / RESUME - FULL STACK DEVELOPER
+===================================================
+====================================================
+CURRICULUM VITAE / RESUME
+====================================================
+
+Name: Harshini Pogula
+Email: harshinipogula17gmail.com
+Location: Hyderabad, Telangana, India
+
+PROFESSIONAL SUMMARY
+
+B.Tech Computer Science Engineering student at Narasimha Reddy Engineering College. Currently pursuing an internship at Thrinex. Passionate about web development and continuously learning new technologies.
+
+TECHNICAL SKILLS
+
+Programming Languages: Java, Python, C
+Web Technologies: HTML, CSS, JavaScript
+Database: MySQL
+Tools: Git, GitHub, VS Code
+
+INTERNSHIP
+
+Company: Thrinex
+Role: Full Stack Intern
+Duration: Current
+
+EDUCATION
+
+B.Tech in Computer Science Engineering
+Narasimha Reddy Engineering College
+2024 - 2028
+Currently in 3rd Year
