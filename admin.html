@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard | Portfolio Management System</title>
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+
+  <!-- ==========================================================================
+       LOGIN VIEW (Visible when user is not authenticated)
+       ========================================================================== -->
+  <div class="admin-login-wrapper" id="login-view">
+    <div class="login-card">
+      <div class="login-logo">
+        Admin<span class="highlight-text">Portal</span>
+      </div>
+      <p class="login-subtitle">Sign in to manage portfolio projects & client messages</p>
+
+      <form id="admin-login-form">
+        <div class="form-group" style="text-align: left;">
+          <label for="admin-email" class="form-label">Email Address</label>
+          <input type="email" id="admin-email" class="form-input" placeholder="admin@example.com" value="admin@example.com" required>
+        </div>
+
+        <div class="form-group" style="text-align: left;">
+          <label for="admin-password" class="form-label">Password</label>
+          <input type="password" id="admin-password" class="form-input" placeholder="••••••••" value="AdminPassword123!" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;" id="login-submit-btn">
+          <i class="fa-solid fa-right-to-bracket"></i> Login to Dashboard
+        </button>
+
+        <div class="form-alert" id="login-alert"></div>
+      </form>
+
+      <div style="margin-top: 2rem; font-size: 0.85rem; color: var(--text-muted);">
+        <a href="index.html" style="color: var(--accent-primary);"><i class="fa-solid fa-arrow-left"></i> Return to Main Portfolio</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       ADMIN DASHBOARD WORKSPACE (Visible after successful JWT authentication)
+       ========================================================================== -->
+  <div class="admin-dashboard" id="dashboard-view" style="display: none;">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <a href="index.html" class="logo" style="font-size: 1.3rem;">
+          Admin<span class="highlight-text">Dashboard</span>
+        </a>
+      </div>
+
+      <nav class="sidebar-menu">
+        <div class="sidebar-link active" data-tab="overview">
+          <i class="fa-solid fa-chart-pie"></i> Overview
+        </div>
+        <div class="sidebar-link" data-tab="projects">
+          <i class="fa-solid fa-folder-open"></i> Manage Projects
+        </div>
+        <div class="sidebar-link" data-tab="messages">
+          <i class="fa-solid fa-inbox"></i> Client Messages
+          <span class="badge-unread" id="sidebar-unread-count" style="margin-left: auto; display: none;">0</span>
+        </div>
+      </nav>
+
+      <div style="margin-top: auto; padding-top: 2rem; border-top: 1px solid var(--card-border);">
+        <button class="btn btn-outline" style="width: 100%; border-color: #ef4444; color: #ef4444;" id="admin-logout-btn">
+          <i class="fa-solid fa-right-from-bracket"></i> Logout
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Workspace Content -->
+    <main class="main-content">
+      <header class="admin-header">
+        <div>
+          <h1 class="admin-title" id="tab-heading">Dashboard Overview</h1>
+          <p style="color: var(--text-secondary); font-size: 0.9rem;">Connected to Node.js & MongoDB REST API</p>
+        </div>
+
+        <div>
+          <a href="index.html" target="_blank" class="btn btn-outline">
+            <i class="fa-solid fa-external-link"></i> Live Portfolio
+          </a>
+        </div>
+      </header>
+
+      <!-- OVERVIEW TAB CONTENT -->
+      <div class="tab-pane" id="pane-overview">
+        <div class="metrics-row">
+          <div class="metric-card">
+            <div class="metric-icon"><i class="fa-solid fa-folder-open"></i></div>
+            <div>
+              <div class="metric-val" id="metric-projects-count">0</div>
+              <div class="metric-lbl">Total Projects</div>
+            </div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-icon"><i class="fa-solid fa-envelope"></i></div>
+            <div>
+              <div class="metric-val" id="metric-messages-count">0</div>
+              <div class="metric-lbl">Contact Inquiries</div>
+            </div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-icon"><i class="fa-solid fa-bell"></i></div>
+            <div>
+              <div class="metric-val" id="metric-unread-count">0</div>
+              <div class="metric-lbl">Unread Messages</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="skill-category-card" style="margin-top: 2rem;">
+          <h3 style="font-family: var(--font-heading); margin-bottom: 1rem;">System Health & API Status</h3>
+          <div style="display: flex; align-items: center; gap: 0.8rem; color: #22c55e;">
+            <i class="fa-solid fa-circle-check"></i>
+            <span style="font-weight: 600;">REST API & MongoDB Connection Active</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- PROJECTS MANAGEMENT TAB -->
+      <div class="tab-pane" id="pane-projects" style="display: none;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+          <h3 style="font-family: var(--font-heading);">Project Repository</h3>
+          <button class="btn btn-primary" id="open-add-project-modal">
+            <i class="fa-solid fa-plus"></i> Add New Project
+          </button>
+        </div>
+
+        <div class="table-container">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Image</th>
+                <th>Title</th>
+                <th>Category</th>
+                <th>Tech Stack</th>
+                <th>Featured</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="projects-table-body">
+              <!-- Rendered dynamically by admin.js -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- MESSAGES TAB -->
+      <div class="tab-pane" id="pane-messages" style="display: none;">
+        <h3 style="font-family: var(--font-heading); margin-bottom: 1.5rem;">Client Inquiries Inbox</h3>
+        <div class="table-container">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Status</th>
+                <th>Date</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Subject</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="messages-table-body">
+              <!-- Rendered dynamically by admin.js -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- ==========================================================================
+       CREATE / EDIT PROJECT MODAL
+       ========================================================================== -->
+  <div class="modal-overlay" id="project-form-modal">
+    <div class="modal-card">
+      <button class="modal-close-btn" id="close-project-modal-btn">&times;</button>
+      <h3 style="font-family: var(--font-heading); margin-bottom: 1.5rem;" id="project-modal-title">Add New Project</h3>
+
+      <form id="project-form">
+        <input type="hidden" id="project-id">
+
+        <div class="form-group">
+          <label for="proj-title" class="form-label">Project Title</label>
+          <input type="text" id="proj-title" class="form-input" placeholder="e.g. E-Commerce Platform" required>
+        </div>
+
+        <div class="form-group">
+          <label for="proj-category" class="form-label">Category</label>
+          <select id="proj-category" class="form-input" style="background: var(--bg-primary);">
+            <option value="Full Stack">Full Stack</option>
+            <option value="Frontend">Frontend</option>
+            <option value="Backend">Backend</option>
+            <option value="Mobile">Mobile</option>
+            <option value="UI/UX">UI/UX</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="proj-desc" class="form-label">Short Description</label>
+          <input type="text" id="proj-desc" class="form-input" placeholder="Brief summary of what the app does" required>
+        </div>
+
+        <div class="form-group">
+          <label for="proj-full-desc" class="form-label">Full Case Study Description</label>
+          <textarea id="proj-full-desc" class="form-textarea" placeholder="Detailed architectural breakdown"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="proj-image" class="form-label">Image URL</label>
+          <input type="text" id="proj-image" class="form-input" placeholder="https://images.unsplash.com/...">
+        </div>
+
+        <div class="form-group">
+          <label for="proj-tech" class="form-label">Tech Stack (Comma-separated)</label>
+          <input type="text" id="proj-tech" class="form-input" placeholder="Node.js, Express.js, MongoDB, JavaScript">
+        </div>
+
+        <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div>
+            <label for="proj-live" class="form-label">Live Demo URL</label>
+            <input type="text" id="proj-live" class="form-input" placeholder="https://demo.example.com">
+          </div>
+          <div>
+            <label for="proj-github" class="form-label">GitHub Repository URL</label>
+            <input type="text" id="proj-github" class="form-input" placeholder="https://github.com/...">
+          </div>
+        </div>
+
+        <div class="form-group" style="display: flex; align-items: center; gap: 0.8rem;">
+          <input type="checkbox" id="proj-featured" style="width: 18px; height: 18px;">
+          <label for="proj-featured" class="form-label" style="margin: 0; cursor: pointer;">Feature on Home Page Banner</label>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;" id="save-project-btn">
+          <i class="fa-solid fa-floppy-disk"></i> Save Project
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       VIEW MESSAGE DETAILS MODAL
+       ========================================================================== -->
+  <div class="modal-overlay" id="message-detail-modal">
+    <div class="modal-card">
+      <button class="modal-close-btn" id="close-message-modal-btn">&times;</button>
+      <h3 style="font-family: var(--font-heading); margin-bottom: 1rem;" id="msg-detail-subject">Message Subject</h3>
+      <div style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 1.5rem;" id="msg-detail-meta">From: Sender Name (email@example.com)</div>
+      
+      <div style="background: var(--bg-primary); padding: 1.5rem; border-radius: var(--radius-md); border: 1px solid var(--card-border); margin-bottom: 1.5rem; line-height: 1.7;" id="msg-detail-body">
+        Message content...
+      </div>
+
+      <div style="display: flex; gap: 1rem;">
+        <button class="btn btn-outline" id="toggle-read-btn">Mark as Unread</button>
+        <button class="btn btn-outline" style="border-color: #ef4444; color: #ef4444;" id="delete-msg-btn">Delete Message</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Admin JavaScript -->
+  <script src="js/admin.js"></script>
+</body>
+</html>

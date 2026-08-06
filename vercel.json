@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "name": "fullstack-portfolio-frontend",
+  "cleanUrls": true,
+  "routes": [
+    {
+      "src": "/admin",
+      "dest": "/admin.html"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/$1"
+    }
+  ]
+}
